@@ -1,0 +1,28 @@
+package com.example.demo.controller;
+
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.example.demo.entity.Country;
+import com.example.demo.repository.CountryRepository;
+
+@Controller
+public class CountryController {
+	private CountryRepository countryRepository;
+	
+	@GetMapping("/")
+	public String showPage(@RequestParam(defaultValue="0") int page, Model model) {
+		model.addAttribute("data",countryRepository.findAll(new PageRequest(page,4)));
+		return "index";
+	}
+	
+	@PostMapping("/save")
+	public String save(Country country) {
+		countryRepository.save(country);
+		return "redirect:/";
+	}
+}
